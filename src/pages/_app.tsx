@@ -5,6 +5,8 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import Container from "components/Container";
 import defaultTheme from "utils/style/theme";
 
+import "semantic-ui-css/semantic.min.css";
+
 const GlobalStyle = createGlobalStyle`
 html,
 body {
