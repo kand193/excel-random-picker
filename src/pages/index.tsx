@@ -1,11 +1,16 @@
+import pickRandom from "pick-random";
 import React, { ChangeEvent, FC, useCallback, useState } from "react";
+// @ts-ignore
 import readXlsxFile from "read-excel-file";
 import { Header, Icon, Input, Label, Form, Button, Container } from "semantic-ui-react";
+
+import TextSlotMachineGroup from "../components/TextSlotMachineGroup";
 
 const IndexPage: FC = () => {
   const [memberSize, setMemberSize] = useState(0);
   const [rookies, setRookies] = useState<Array<string>>([]);
-  const [pickedMembers, setPickedMembers] = useState<Array<Array<string>>>([]);
+  const [remainRookies, setRemainRookies] = useState<Array<string>>([]);
+  const [pickedMembersList, setPickedMembersList] = useState<Array<Array<string>>>([]);
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -25,6 +30,7 @@ const IndexPage: FC = () => {
 
     const members = parseRes.map((p: Array<string>) => p.join(" "));
     setRookies(members);
+    setRemainRookies(members);
   };
 
   const handleSizeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +38,22 @@ const IndexPage: FC = () => {
   };
 
   const handleSubmit = useCallback(() => {
-    console.log("CLICK");
-  }, [rookies, memberSize]);
+    if (!remainRookies.length) {
+      alert("남은 멤버가 없습니다.");
+    }
+
+    try {
+      const results = pickRandom(remainRookies, { count: memberSize });
+      setPickedMembersList([...pickedMembersList, results]);
+
+      setRemainRookies(remainRookies.filter((rookie) => !results.includes(rookie)));
+    } catch (e) {
+      // 뽑으려는 수보다 적게 남은 경우
+      setPickedMembersList([...pickedMembersList, remainRookies]);
+
+      setRemainRookies([]);
+    }
+  }, [remainRookies, memberSize, pickedMembersList]);
 
   return (
     <Container style={{ marginTop: "30px" }}>
@@ -48,6 +68,15 @@ const IndexPage: FC = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Field>
           <Input
+            type="file"
+            label="엑셀 파일"
+            labelPosition="left"
+            accept=".xlsx"
+            onChange={handleUpload}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Input
             type="number"
             min={0}
             labelPosition="right"
@@ -60,22 +89,13 @@ const IndexPage: FC = () => {
             <Label>명</Label>
           </Input>
         </Form.Field>
-        <Form.Field>
-          <Input
-            type="file"
-            label="엑셀 파일"
-            labelPosition="left"
-            accept=".xlsx"
-            onChange={handleUpload}
-          />
-        </Form.Field>
-        <Button type="submit" primary>
+        <Button type="submit" primary disabled={!rookies.length}>
           뽑자
         </Button>
       </Form>
 
-      {pickedMembers.map((r, index) => (
-        <div key={index}>{r}</div>
+      {pickedMembersList.map((r, index) => (
+        <TextSlotMachineGroup key={`group${index}`} texts={rookies} pickedMembers={r} />
       ))}
     </Container>
   );

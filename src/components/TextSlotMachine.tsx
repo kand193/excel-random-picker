@@ -1,21 +1,55 @@
-import React from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+
+const TEXT_HEIGHT_PX = 40;
 
 interface TextSlotMachineProps {
   texts: Array<string>;
+  lastText: string;
 }
 
-const TextSlotMachine = ({ texts }: TextSlotMachineProps) => (
+const TextSlotMachine: FC<TextSlotMachineProps> = ({ texts, lastText }: TextSlotMachineProps) => {
+  const [slideHeight, setSlideHeight] = useState(0);
+  const [slideTime, setSlideTime] = useState(0);
+  const slideRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setSlideHeight(slideRef.current?.clientHeight ?? 0);
+    setSlideTime((Math.floor(Math.random() * 30) + 10) / 10);
+  }, [slideRef]);
+
+  return (
     <SlotMachineWrapper>
-      {texts.map((text) =>
-        <div key={text}>
-          {text}
-        </div>)}
+      <SlideArea ref={slideRef} top={(slideHeight - TEXT_HEIGHT_PX) * -1} slideTime={slideTime}>
+        {texts.map((text) => (
+          <TextElement key={text}>{text}</TextElement>
+        ))}
+        <TextElement>{lastText}</TextElement>
+      </SlideArea>
     </SlotMachineWrapper>
-);
+  );
+};
 
 export default TextSlotMachine;
 
 const SlotMachineWrapper = styled.div`
+  position: relative;
+  width: 200px;
+  height: ${TEXT_HEIGHT_PX}px;
+  overflow: hidden;
+`;
 
+const SlideArea = styled.div<{ top: number; slideTime: number }>`
+  position: absolute;
+  top: ${(props) => (props.top ? `${props.top}px` : "0")};
+  left: 0;
+  width: 100%;
+  transition: top ${(props) => props.slideTime ?? 0}s ease-in-out;
+`;
+
+const TextElement = styled.div`
+  height: ${TEXT_HEIGHT_PX}px;
+  font-size: 25px;
+  line-height: ${TEXT_HEIGHT_PX}px;
+  text-align: center;
 `;
