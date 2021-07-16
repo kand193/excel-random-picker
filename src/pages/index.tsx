@@ -40,14 +40,13 @@ const IndexPage: FC = () => {
   const handleSubmit = useCallback(() => {
     if (!remainRookies.length) {
       alert("남은 멤버가 없습니다.");
+      return;
     }
 
     try {
       let results: Array<string> = [];
       while (true) {
         results = pickRandom(remainRookies, { count: memberSize });
-
-        console.log(results);
 
         if (results.filter((r) => r.includes("스태프")).length) {
           break;
