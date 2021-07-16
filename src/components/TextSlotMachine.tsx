@@ -22,9 +22,9 @@ const TextSlotMachine: FC<TextSlotMachineProps> = ({ texts, lastText }: TextSlot
     <SlotMachineWrapper>
       <SlideArea ref={slideRef} top={(slideHeight - TEXT_HEIGHT_PX) * -1} slideTime={slideTime}>
         {texts.map((text) => (
-          <TextElement key={text}>{text}</TextElement>
+          <TextElement key={text}>{text.replace(" 스태프", "")}</TextElement>
         ))}
-        <TextElement>{lastText}</TextElement>
+        <TextElement>{lastText.replace(" 스태프", "")}</TextElement>
       </SlideArea>
     </SlotMachineWrapper>
   );
@@ -34,7 +34,7 @@ export default TextSlotMachine;
 
 const SlotMachineWrapper = styled.div`
   position: relative;
-  width: 200px;
+  width: 160px;
   height: ${TEXT_HEIGHT_PX}px;
   overflow: hidden;
 `;
@@ -49,6 +49,7 @@ const SlideArea = styled.div<{ top: number; slideTime: number }>`
 
 const TextElement = styled.div`
   height: ${TEXT_HEIGHT_PX}px;
+  overflow: hidden;
   font-size: 25px;
   line-height: ${TEXT_HEIGHT_PX}px;
   text-align: center;

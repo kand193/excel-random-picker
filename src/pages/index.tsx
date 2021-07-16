@@ -43,7 +43,21 @@ const IndexPage: FC = () => {
     }
 
     try {
-      const results = pickRandom(remainRookies, { count: memberSize });
+      let results: Array<string> = [];
+      while (true) {
+        results = pickRandom(remainRookies, { count: memberSize });
+
+        console.log(results);
+
+        if (results.filter((r) => r.includes("스태프")).length) {
+          break;
+        }
+
+        if (!remainRookies.filter((r) => r.includes("스태프")).length) {
+          break;
+        }
+      }
+
       setPickedMembersList([...pickedMembersList, results]);
 
       setRemainRookies(remainRookies.filter((rookie) => !results.includes(rookie)));
@@ -95,7 +109,12 @@ const IndexPage: FC = () => {
       </Form>
 
       {pickedMembersList.map((r, index) => (
-        <TextSlotMachineGroup key={`group${index}`} texts={rookies} pickedMembers={r} />
+        <TextSlotMachineGroup
+          index={index + 1}
+          key={`group${index}`}
+          texts={rookies}
+          pickedMembers={r}
+        />
       ))}
     </Container>
   );
