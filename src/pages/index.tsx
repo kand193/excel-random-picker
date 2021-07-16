@@ -48,7 +48,9 @@ const IndexPage: FC = () => {
       while (true) {
         results = pickRandom(remainRookies, { count: memberSize });
 
-        if (results.filter((r) => r.includes("스태프")).length) {
+        if (results.filter((r) => r.includes("스태프")).length === 1) {
+          break;
+        } else if (remainRookies.length < memberSize * 2) {
           break;
         }
 

@@ -36,7 +36,7 @@ const GroupWrapper = styled.div`
 `;
 
 const IndexLabel = styled.div`
-  width: 40px;
+  width: 50px;
   font-size: 20px;
   text-align: center;
 `;

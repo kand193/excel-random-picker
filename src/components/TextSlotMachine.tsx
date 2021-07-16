@@ -34,7 +34,7 @@ export default TextSlotMachine;
 
 const SlotMachineWrapper = styled.div`
   position: relative;
-  width: 160px;
+  width: 130px;
   height: ${TEXT_HEIGHT_PX}px;
   overflow: hidden;
 `;
@@ -50,7 +50,7 @@ const SlideArea = styled.div<{ top: number; slideTime: number }>`
 const TextElement = styled.div`
   height: ${TEXT_HEIGHT_PX}px;
   overflow: hidden;
-  font-size: 25px;
+  font-size: 20px;
   line-height: ${TEXT_HEIGHT_PX}px;
   text-align: center;
 `;
