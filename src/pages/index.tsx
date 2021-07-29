@@ -16,7 +16,10 @@ const IndexPage: FC = () => {
     const { files } = e.target;
     const excelFile = files?.[0];
 
-    if (!excelFile || !excelFile.type.includes("xlsx")) {
+    if (
+      !excelFile ||
+      (!excelFile.type.includes("xlsx") && !excelFile.type.includes("spreadsheet"))
+    ) {
       alert("엑셀 올리라고");
       return;
     }
