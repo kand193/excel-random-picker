@@ -36,9 +36,6 @@ const Wrapper = styled.button<{ checked: boolean, isCurrent: boolean }>`
   cursor: pointer;
   border: 0;
   outline: 0;
-  border-top: 1px solid gray;
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
   background-color: ${({ isCurrent }) => (isCurrent ? "#FFEAEA" : "#fff")};
 
   :hover {
