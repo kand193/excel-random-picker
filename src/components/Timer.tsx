@@ -38,7 +38,19 @@ const Timer: FC = () => {
   const handleStart = () => {
     setIsProgress((prev) => !prev);
     const newIntervalId = setInterval(() => {
-      setSeconds((prev) => prev - 1);
+      setSeconds((sec) => {
+        if (sec === 0) {
+          setMinutes((min) => {
+            if (min === 0) {
+              setHours((h) => h - 1);
+              return 59;
+            }
+            return min - 1;
+          });
+          return 59;
+        }
+        return sec - 1;
+      });
     }, 1000);
     setIntervalId(newIntervalId);
 
