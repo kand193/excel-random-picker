@@ -86,7 +86,7 @@ const Timer: FC = () => {
           </InputWrapper>
           <ButtonWrapper>
             <StartButton isProgress={isProgress} onClick={isProgress ? handlePause : handleStart}>
-                Start
+                {isProgress ? "Pause" : "Start"}
             </StartButton>
             <ResetButton disabled={isProgress} onClick={handleReset}>
                 Reset
